@@ -40,6 +40,12 @@ A shopping cart application built with React and Vite as part of The Odin Projec
    npm install @testing-library/user-event --save-dev
    ```
 
+7. Install React Router:
+
+   ```bash
+   npm install react-router
+   ```
+
 ## Configuration
 
 ### vite.config.js
@@ -86,6 +92,12 @@ Added the test script:
 }
 ```
 
+### Routing
+
+**src/main.jsx** — Switched from rendering `<App />` directly to using `createBrowserRouter` + `RouterProvider` with a separate routes config.
+
+**src/routes.jsx** — Route config defining `/` → `<App />` and an `errorElement` → `<ErrorPage />`.
+
 ## Project Structure
 
 ```
@@ -94,10 +106,12 @@ odin-shopping-cart/
 ├── src/
 │   ├── components/
 │   │   ├── App.jsx
-│   │   └── App.css
+│   │   ├── App.css
+│   │   └── ErrorPage.jsx
 │   ├── assets/
 │   ├── index.css
-│   └── main.jsx
+│   ├── main.jsx
+│   └── routes.jsx
 ├── tests/
 │   ├── setup.js
 │   └── components/
