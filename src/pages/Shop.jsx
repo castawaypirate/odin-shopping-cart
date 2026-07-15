@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router";
-import Card from "./Card";
+import Card from "../components/Card";
+import styles from "./Shop.module.css";
 
 export default function Shop() {
   const products = useLoaderData();
@@ -25,11 +26,11 @@ export default function Shop() {
   // };
 
   return (
-    <>
-      <h1>Shop</h1>
+    <div className={styles.cardGrid}>
+      {/* <h1>Shop</h1> */}
       {products.map((item) => (
         <Card key={item.id} product={item} />
       ))}
-    </>
+    </div>
   );
 }

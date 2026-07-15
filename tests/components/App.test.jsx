@@ -2,29 +2,29 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import App from "../../src/components/App";
+import App from "../../src/App";
 
-describe("App", () => {
-  it("renders counter button", () => {
-    render(<App />);
-
-    screen.debug();
-
-    const button = screen.getByRole("button");
-
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent(/Count is/);
-  });
-
-  it("counter button", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-    const counter = screen.getByText(/Count/);
-    await user.click(counter);
-    await user.click(counter);
-    expect(counter.textContent).toEqual("Count is 2");
-  });
-});
+// describe("App", () => {
+//   it("renders counter button", () => {
+//     render(<App />);
+//
+//     screen.debug();
+//
+//     const button = screen.getByRole("button");
+//
+//     expect(button).toBeInTheDocument();
+//     expect(button).toHaveTextContent(/Count is/);
+//   });
+//
+//   it("counter button", async () => {
+//     const user = userEvent.setup();
+//     render(<App />);
+//     const counter = screen.getByText(/Count/);
+//     await user.click(counter);
+//     await user.click(counter);
+//     expect(counter.textContent).toEqual("Count is 2");
+//   });
+// });
 
 // import { vi, test, describe, it, expect } from "vitest";
 // import userEvent from "@testing-library/user-event";

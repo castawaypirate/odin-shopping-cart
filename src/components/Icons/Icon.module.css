@@ -1,0 +1,12 @@
+.navIcon {
+  fill: #9ca3af;
+  height: auto;
+}
+
+.navIcon:hover {
+  fill: #111827;
+}
+
+.active {
+  fill: #111827;
+}

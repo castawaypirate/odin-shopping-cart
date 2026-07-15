@@ -1,13 +1,8 @@
-import App from "./components/App";
-import Home from "./components/Home";
-import Shop from "./components/Shop";
-import Cart from "./components/Cart";
-import ErrorPage from "./components/ErrorPage";
-// import { Test } from "./Test";
-// import Test1 from "./Test1";
-// import Test2 from "./Test2";
-// import Test3 from "./Test3";
-// import SmallTest from "./SmallTest";
+import App from "./App";
+import Home from "./pages/Home";
+import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
+import ErrorPage from "./pages/ErrorPage";
 
 const dummyLoader = () => new Promise((resolve) => setTimeout(resolve, 2000));
 

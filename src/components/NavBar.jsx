@@ -1,14 +1,22 @@
 import { NavLink } from "react-router";
+import HomeIcon from "./Icons/HomeIcon";
+import ShopIcon from "./Icons/ShopIcon";
+import CartIcon from "./Icons/CartIcon";
+import styles from "./NavBar.module.css";
 
 function NavBar() {
   return (
-    <>
-      <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/shop">Shop</NavLink>
-        <NavLink to="/cart">Cart</NavLink>
-      </nav>
-    </>
+    <nav className={styles.navBar}>
+      <NavLink to="/">
+        {({ isActive }) => <HomeIcon size={36} active={isActive} />}
+      </NavLink>
+      <NavLink to="/shop">
+        {({ isActive }) => <ShopIcon size={36} active={isActive} />}
+      </NavLink>
+      <NavLink to="/cart">
+        {({ isActive }) => <CartIcon size={36} active={isActive} />}
+      </NavLink>
+    </nav>
   );
 }
 
