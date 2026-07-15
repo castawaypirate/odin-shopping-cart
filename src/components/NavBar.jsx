@@ -14,7 +14,9 @@ function NavBar() {
         {({ isActive }) => <ShopIcon size={36} active={isActive} />}
       </NavLink>
       <NavLink to="/cart">
-        {({ isActive }) => <CartIcon size={36} active={isActive} />}
+        {({ isActive }) => (
+          <CartIcon size={36} active={isActive} header={true} />
+        )}
       </NavLink>
     </nav>
   );

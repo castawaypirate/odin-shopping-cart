@@ -1,9 +1,23 @@
-import { useEffect, useRef } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import CartIcon from "./Icons/CartIcon";
+// import { CartContext } from "../contexts/CartContext";
 
 import styles from "./Card.module.css";
 
-export default function Card({ product }) {
+export default function Card({ handleAdd, handleRemove, product }) {
+  const [count, setCount] = useState(0);
+  // const cartItems = useContext(CartContext);
+  const addItem = (product) => {
+    // cartItems.push("test");
+    // console.log(cartItems);
+    handleAdd(product);
+    setCount(count + 1);
+  };
+
+  const removeItem = (product) => {
+    handleRemove(product);
+    setCount(count - 1);
+  };
   return (
     <div className={styles.card}>
       <div className={styles.imgContainer}>
@@ -15,9 +29,20 @@ export default function Card({ product }) {
         </p>
         <p>{product.price}</p>
         <div className={styles.cartControls}>
-          <button className={styles.cartIcon}>
-            <CartIcon size={24} />
-          </button>
+          {count === 0 ? (
+            <button
+              onClick={() => addItem(product)}
+              className={styles.cartIcon}
+            >
+              <CartIcon size={24} />
+            </button>
+          ) : (
+            <>
+              <button onClick={() => addItem(product)}>+</button>
+              <span>{count}</span>
+              <button onClick={() => removeItem(product)}>-</button>
+            </>
+          )}
         </div>
       </div>
     </div>

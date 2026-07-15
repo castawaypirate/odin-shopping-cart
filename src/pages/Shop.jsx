@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import { useLoaderData } from "react-router";
 import Card from "../components/Card";
+import { CartContext } from "../contexts/CartContext";
 import styles from "./Shop.module.css";
 
 export default function Shop() {
   const products = useLoaderData();
+  const [cartItems, addItemToCart, removeItemFromCart] =
+    useContext(CartContext);
+
   console.log(products);
 
   // const something = (obj) => {
@@ -29,7 +34,12 @@ export default function Shop() {
     <div className={styles.cardGrid}>
       {/* <h1>Shop</h1> */}
       {products.map((item) => (
-        <Card key={item.id} product={item} />
+        <Card
+          handleAdd={addItemToCart}
+          handleRemove={removeItemFromCart}
+          key={item.id}
+          product={item}
+        />
       ))}
     </div>
   );
