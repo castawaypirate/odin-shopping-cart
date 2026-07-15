@@ -14,7 +14,9 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeItemFromCart = (item) => {
-    setCartItems([...cartItems.filter((it) => it.id !== item.id)]);
+    let index = cartItems.findIndex((it) => it.id === item.id);
+    cartItems.splice(index, 1);
+    setCartItems([...cartItems]);
   };
 
   return (

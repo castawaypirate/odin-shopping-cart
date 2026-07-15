@@ -37,6 +37,7 @@ export default function Shop() {
         <Card
           handleAdd={addItemToCart}
           handleRemove={removeItemFromCart}
+          count={cartItems.filter((it) => it.id === item.id).length}
           key={item.id}
           product={item}
         />

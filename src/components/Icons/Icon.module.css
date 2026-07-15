@@ -1,6 +1,7 @@
 .navIcon {
   fill: #9ca3af;
   height: auto;
+  position: relative;
 }
 
 .navIcon:hover {
@@ -9,4 +10,20 @@
 
 .active {
   fill: #111827;
+}
+
+.cartCounter {
+  width: 24px;
+  height: 24px;
+  color: black;
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1px;
 }

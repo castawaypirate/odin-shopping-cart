@@ -1,22 +1,24 @@
 import { useState, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import CartIcon from "./Icons/CartIcon";
 // import { CartContext } from "../contexts/CartContext";
 
 import styles from "./Card.module.css";
 
-export default function Card({ handleAdd, handleRemove, product }) {
-  const [count, setCount] = useState(0);
+export default function Card({ handleAdd, handleRemove, product, count }) {
+  let navigate = useNavigate();
+  // const [count, setCount] = useState(0);
   // const cartItems = useContext(CartContext);
   const addItem = (product) => {
     // cartItems.push("test");
     // console.log(cartItems);
     handleAdd(product);
-    setCount(count + 1);
+    // setCount(count + 1);
   };
 
   const removeItem = (product) => {
     handleRemove(product);
-    setCount(count - 1);
+    // setCount(count - 1);
   };
   return (
     <div className={styles.card}>
@@ -38,9 +40,12 @@ export default function Card({ handleAdd, handleRemove, product }) {
             </button>
           ) : (
             <>
-              <button onClick={() => addItem(product)}>+</button>
-              <span>{count}</span>
-              <button onClick={() => removeItem(product)}>-</button>
+              <div>
+                <button onClick={() => addItem(product)}>+</button>
+                <span>{count}</span>
+                <button onClick={() => removeItem(product)}>-</button>
+              </div>
+              <button onClick={() => navigate("/cart")}>Checkout</button>
             </>
           )}
         </div>
