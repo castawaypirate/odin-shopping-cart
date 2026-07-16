@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { useLoaderData } from "react-router";
+import { useNavigate, useLoaderData } from "react-router";
 import Card from "../components/Card";
 import { CartContext } from "../contexts/CartContext";
 import styles from "./Shop.module.css";
 
 export default function Shop() {
+  const navigate = useNavigate();
   const products = useLoaderData();
   const [cartItems, addItemToCart, removeItemFromCart] =
     useContext(CartContext);
@@ -29,12 +30,16 @@ export default function Shop() {
   //     </>
   //   );
   // };
+  const navigateToProduct = (id) => {
+    navigate(`/product/${id}`);
+  };
 
   return (
     <div className={styles.cardGrid}>
       {/* <h1>Shop</h1> */}
       {products.map((item) => (
         <Card
+          click={navigateToProduct}
           handleAdd={addItemToCart}
           handleRemove={removeItemFromCart}
           count={cartItems.filter((it) => it.id === item.id).length}

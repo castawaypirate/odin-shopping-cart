@@ -9,7 +9,7 @@ export default function CartIcon({ size, active, header }) {
   const classes = `${styles.navIcon} ${isActive}`;
 
   return (
-    <div>
+    <div className={styles.iconContainer}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 -960 960 960"

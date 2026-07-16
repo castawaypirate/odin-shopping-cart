@@ -28,8 +28,8 @@ export default function Home() {
       <div className={styles.h19}>fading...</div>
       <div className={styles.h20}>...</div>
       <div className={styles.h21}>
-        You went to great trouble looking at the HTML. Well Done! Here's your
-        cookie
+        You went into big trouble looking at the HTML. Well Done! Here's your
+        cookie!
       </div>
       <button onClick={() => navigate("/shop")}>Start shopping</button>
     </>

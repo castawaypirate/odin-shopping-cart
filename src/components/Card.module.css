@@ -1,8 +1,8 @@
-.card {
-  /* img { */
-  /*   width: 200px; */
-  /*   height: auto; */
-  /* } */
+.card:hover {
+  cursor: pointer;
+  .productDesc {
+    text-decoration: underline;
+  }
 }
 
 .imgContainer {
@@ -27,9 +27,15 @@
 
 .cartControls {
 }
-
+/* .quantityControls { */
+/*   display: flex; */
+/*   flex-direction: row; */
+/*   align-items: center; */
+/* } */
+/**/
 .cartIcon {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* justify-content: center; */
+  /* align-items: center; */
 }

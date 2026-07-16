@@ -1,7 +1,12 @@
+/* .iconContainer { */
+/*   display: block; */
+/* } */
+
 .navIcon {
   fill: #9ca3af;
   height: auto;
   position: relative;
+  display: block;
 }
 
 .navIcon:hover {

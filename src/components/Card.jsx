@@ -5,7 +5,13 @@ import CartIcon from "./Icons/CartIcon";
 
 import styles from "./Card.module.css";
 
-export default function Card({ handleAdd, handleRemove, product, count }) {
+export default function Card({
+  click,
+  handleAdd,
+  handleRemove,
+  product,
+  count,
+}) {
   let navigate = useNavigate();
   // const [count, setCount] = useState(0);
   // const cartItems = useContext(CartContext);
@@ -21,7 +27,7 @@ export default function Card({ handleAdd, handleRemove, product, count }) {
     // setCount(count - 1);
   };
   return (
-    <div className={styles.card}>
+    <div onClick={() => click(product.id)} className={styles.card}>
       <div className={styles.imgContainer}>
         <img src={product.image} />
       </div>
@@ -29,7 +35,7 @@ export default function Card({ handleAdd, handleRemove, product, count }) {
         <p title={product.title} className={styles.productDesc}>
           {product.title}
         </p>
-        <p>{product.price}</p>
+        <p>{product.price} gp</p>
         <div className={styles.cartControls}>
           {count === 0 ? (
             <button
@@ -40,7 +46,7 @@ export default function Card({ handleAdd, handleRemove, product, count }) {
             </button>
           ) : (
             <>
-              <div>
+              <div className={styles.quantityControls}>
                 <button onClick={() => addItem(product)}>+</button>
                 <span>{count}</span>
                 <button onClick={() => removeItem(product)}>-</button>

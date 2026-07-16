@@ -2,9 +2,12 @@ import App from "./App";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import Product, { loader as ProductLoader } from "./pages/Product";
 import ErrorPage from "./pages/ErrorPage";
 
 const dummyLoader = () => new Promise((resolve) => setTimeout(resolve, 2000));
+
+// mayde do another request for the specific product to see how loaders work in more detail
 
 const routes = [
   {
@@ -17,7 +20,7 @@ const routes = [
         element: <Home />,
       },
       {
-        path: "/shop",
+        path: "shop",
         element: <Shop />,
         loader: async () => {
           const response = await fetch("https://fakestoreapi.com/products");
@@ -25,8 +28,9 @@ const routes = [
           return response.json();
         },
       },
+      { path: "product/:id", element: <Product />, loader: ProductLoader },
       {
-        path: "/cart",
+        path: "cart",
         element: <Cart />,
       },
     ],
