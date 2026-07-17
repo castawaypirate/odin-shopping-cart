@@ -1,7 +1,5 @@
-import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import CartIcon from "./Icons/CartIcon";
-// import { CartContext } from "../contexts/CartContext";
 
 import styles from "./Card.module.css";
 
@@ -13,18 +11,12 @@ export default function Card({
   count,
 }) {
   let navigate = useNavigate();
-  // const [count, setCount] = useState(0);
-  // const cartItems = useContext(CartContext);
   const addItem = (product) => {
-    // cartItems.push("test");
-    // console.log(cartItems);
     handleAdd(product);
-    // setCount(count + 1);
   };
 
   const removeItem = (product) => {
     handleRemove(product);
-    // setCount(count - 1);
   };
   return (
     <div className={styles.card}>

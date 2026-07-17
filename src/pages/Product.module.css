@@ -1,0 +1,46 @@
+.productContainer {
+  margin: 1rem;
+}
+
+.cartControls {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  button:hover {
+    cursor: pointer;
+  }
+  button {
+    width: fit-content;
+  }
+}
+
+.cartIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  width: 36px !important;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.quantityControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+  }
+}
+
+.regularButton {
+  padding: 0 0.3rem;
+}

@@ -1,9 +1,33 @@
-import { useLoaderData } from "react-router";
+import { useContext } from "react";
+import { useLoaderData, useNavigate } from "react-router";
+import CartIcon from "../components/Icons/CartIcon";
+import { CartContext } from "../contexts/CartContext";
+
+import styles from "./Product.module.css";
 
 export default function Product() {
   const productData = useLoaderData();
+  const navigate = useNavigate();
+  const [cartItems, addItemToCart, removeItemFromCart] =
+    useContext(CartContext);
+
+  const addItem = (product) => {
+    addItemToCart(product);
+  };
+
+  const removeItem = (product) => {
+    removeItemFromCart(product);
+  };
+
+  const count = () => {
+    if (cartItems.length === 0) {
+      return 0;
+    }
+    return cartItems.filter((item) => item.id === productData.id).length;
+  };
+
   return (
-    <div>
+    <div className={styles.productContainer}>
       <img src={productData.image} alt="" />
       <h2>{productData.title}</h2>
       <p>Price: {productData.price} gp</p>
@@ -22,6 +46,30 @@ export default function Product() {
         <strong>{productData.rating.rate}/5</strong> ({productData.rating.count}
         )
       </p>
+      <div className={styles.cartControls}>
+        {count() === 0 ? (
+          <button
+            onClick={() => addItem(productData)}
+            className={styles.cartIcon}
+          >
+            <CartIcon size={24} />
+          </button>
+        ) : (
+          <>
+            <div className={styles.quantityControls}>
+              <button onClick={() => addItem(productData)}>+</button>
+              <span>{count()}</span>
+              <button onClick={() => removeItem(productData)}>-</button>
+            </div>
+            <button
+              className={styles.regularButton}
+              onClick={() => navigate("/cart")}
+            >
+              Checkout
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }

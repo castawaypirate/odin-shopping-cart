@@ -12,9 +12,6 @@ export default function Shop() {
   const [cartItems, addItemToCart, removeItemFromCart] =
     useContext(CartContext);
 
-  console.log(products);
-  console.log(categories);
-
   const navigateToProduct = (id) => {
     navigate(`/product/${id}`);
   };
