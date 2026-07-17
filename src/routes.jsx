@@ -25,7 +25,19 @@ const routes = [
         loader: async () => {
           const response = await fetch("https://fakestoreapi.com/products");
           dummyLoader();
-          return response.json();
+          const products = await response.json();
+          let set = new Set();
+          for (let product of products) {
+            let category = product.category
+              .toLowerCase()
+              .split(" ")
+              .map(function (word) {
+                return word[0].toUpperCase() + word.substr(1);
+              })
+              .join(" ");
+            set.add(category);
+          }
+          return [[...set], products];
         },
       },
       { path: "product/:id", element: <Product />, loader: ProductLoader },

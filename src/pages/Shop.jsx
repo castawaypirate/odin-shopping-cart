@@ -6,47 +6,48 @@ import styles from "./Shop.module.css";
 
 export default function Shop() {
   const navigate = useNavigate();
-  const products = useLoaderData();
+  const [categories, products] = useLoaderData();
   const [cartItems, addItemToCart, removeItemFromCart] =
     useContext(CartContext);
 
   console.log(products);
 
-  // const something = (obj) => {
-  //   let temp = [];
-  //   for (let key in obj) {
-  //     if (typeof obj[key] !== "object") {
-  //       temp.push(obj[key]);
-  //     }
-  //   }
-  //   return (
-  //     <>
-  //       {temp.map((item) => (
-  //         <>
-  //           <p>{item}</p>
-  //         </>
-  //       ))}
-  //       <hr />
-  //     </>
-  //   );
-  // };
   const navigateToProduct = (id) => {
     navigate(`/product/${id}`);
   };
 
+  function handleChage(e) {
+    let value = e.target.value;
+    console.log(value);
+  }
+
   return (
-    <div className={styles.cardGrid}>
-      {/* <h1>Shop</h1> */}
-      {products.map((item) => (
-        <Card
-          click={navigateToProduct}
-          handleAdd={addItemToCart}
-          handleRemove={removeItemFromCart}
-          count={cartItems.filter((it) => it.id === item.id).length}
-          key={item.id}
-          product={item}
-        />
-      ))}
-    </div>
+    <>
+      <div className={styles.shopControls}>
+        <input type="search" />
+        <select defaultValue={"all"} onChange={handleChage}>
+          <option value="all">All Categories</option>
+          {categories.map((option) => {
+            return (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div className={styles.cardGrid}>
+        {products.map((item) => (
+          <Card
+            click={navigateToProduct}
+            handleAdd={addItemToCart}
+            handleRemove={removeItemFromCart}
+            count={cartItems.filter((it) => it.id === item.id).length}
+            key={item.id}
+            product={item}
+          />
+        ))}
+      </div>
+    </>
   );
 }
