@@ -28,6 +28,7 @@ const routes = [
           const products = await response.json();
           let set = new Set();
           for (let product of products) {
+            // product.show = true;
             let category = product.category
               .toLowerCase()
               .split(" ")

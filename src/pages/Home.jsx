@@ -31,7 +31,7 @@ export default function Home() {
         You went into big trouble looking at the HTML. Well Done! Here's your
         cookie!
       </div>
-      <button onClick={() => navigate("/shop")}>Start shopping</button>
+      <button onClick={() => navigate("/shop")}>Start Shopping</button>
     </>
   );
 }

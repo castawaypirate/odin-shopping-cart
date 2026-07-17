@@ -2,4 +2,42 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
+  margin: 0 1rem 1rem 1rem;
+}
+
+.shopControls {
+  display: flex;
+  flex-direction: row;
+  margin: 0 1rem 1rem 1rem;
+  gap: 1rem;
+}
+
+.categoryControls {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 1rem;
+  button {
+    text-wrap: nowrap;
+  }
+}
+
+.categoryCheckboxes {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.checkboxWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  label {
+    text-wrap: nowrap;
+  }
+
+  input:hover,
+  label:hover {
+    cursor: pointer;
+  }
 }
