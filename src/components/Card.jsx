@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import CartIcon from "./Icons/CartIcon";
 
@@ -10,7 +11,13 @@ export default function Card({
   product,
   count,
 }) {
+  const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
+
+  function handleOnLoad() {
+    setLoading(false);
+  }
+
   const addItem = (product) => {
     handleAdd(product);
   };
@@ -22,7 +29,13 @@ export default function Card({
     <div className={styles.card}>
       <div className={styles.cardContent} onClick={() => click(product.id)}>
         <div className={styles.imgContainer}>
-          <img src={product.image} />
+          {loading && <h4>Loading...</h4>}
+          <img
+            style={{ display: loading ? "none" : "block" }}
+            onLoad={handleOnLoad}
+            src={product.image}
+            alt={product.title}
+          />
         </div>
         <div className={styles.productDetails}>
           <p title={product.title} className={styles.productDesc}>

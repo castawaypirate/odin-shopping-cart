@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { useLoaderData, useNavigate } from "react-router";
 import CartIcon from "../components/Icons/CartIcon";
 import { CartContext } from "../contexts/CartContext";
@@ -6,10 +6,15 @@ import { CartContext } from "../contexts/CartContext";
 import styles from "./Product.module.css";
 
 export default function Product() {
+  const [loading, setLoading] = useState(true);
   const productData = useLoaderData();
   const navigate = useNavigate();
   const [cartItems, addItemToCart, removeItemFromCart] =
     useContext(CartContext);
+
+  function handleOnLoad() {
+    setLoading(false);
+  }
 
   const addItem = (product) => {
     addItemToCart(product);
@@ -28,7 +33,15 @@ export default function Product() {
 
   return (
     <div className={styles.productContainer}>
-      <img src={productData.image} alt="" />
+      <div>
+        {loading && <h4>Loading...</h4>}
+        <img
+          style={{ display: loading ? "none" : "block" }}
+          onLoad={handleOnLoad}
+          src={productData.image}
+          alt={productData.title}
+        />
+      </div>
       <h2>{productData.title}</h2>
       <p>Price: {productData.price} gp</p>
       <br />
