@@ -73,7 +73,9 @@ export default function Shop() {
               );
             })}
           </div>
-          <button onClick={handleClear}>Clear All</button>
+          <button className={styles.regularButton} onClick={handleClear}>
+            Clear All
+          </button>
         </div>
       </div>
       <div className={styles.cardGrid}>

@@ -1,3 +1,9 @@
+.welcomeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
 .h7 {
   display: block;
   font-size: 0.55em;
@@ -86,4 +92,8 @@
   display: block;
   font-size: 0;
   font-weight: bold;
+}
+
+.regularButton {
+  padding: 0 0.3rem;
 }
