@@ -5,6 +5,9 @@ import Cart from "./pages/Cart";
 import Product, { loader as ProductLoader } from "./pages/Product";
 import ErrorPage from "./pages/ErrorPage";
 
+// this was to try out const navigation = useNavigation() and navigation.state
+// const dummyLoader = () => new Promise((resolve) => setTimeout(resolve, 2000));
+
 const routes = [
   {
     path: "/",
@@ -32,6 +35,7 @@ const routes = [
               .join(" ");
             set.add(category);
           }
+          // dummyLoader();
           return [[...set], products];
         },
         hydrateFallbackElement: <h2>Loading...</h2>,

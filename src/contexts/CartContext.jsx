@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { createContext } from "react";
 
-// export const CartContext = createContext([]);
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext();
 

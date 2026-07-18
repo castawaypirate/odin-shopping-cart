@@ -59,13 +59,15 @@ export default function Shop() {
                 <div className={styles.checkboxWrapper} key={categ}>
                   <input
                     type="checkbox"
-                    id={`custom-checkbox-${index}`}
+                    id={`custom-category-checkbox-${index}`}
                     name={categ.toLowerCase()}
                     value={categ.toLowerCase()}
                     checked={checked.has(categ.toLowerCase())}
                     onChange={() => handleCategoryChecked(categ.toLowerCase())}
                   />
-                  <label htmlFor={`custom-checkbox-${index}`}>{categ}</label>
+                  <label htmlFor={`custom-category-checkbox-${index}`}>
+                    {categ}
+                  </label>
                 </div>
               );
             })}
