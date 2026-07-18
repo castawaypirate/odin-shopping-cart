@@ -7,7 +7,7 @@ import styles from "./Shop.module.css";
 export default function Shop() {
   const navigate = useNavigate();
   const [categories, products] = useLoaderData();
-  const [checked, setChecked] = useState(new Set());
+  const [categoryChecked, setCategoryChecked] = useState(new Set());
   const [search, setSearch] = useState("");
   const [cartItems, addItemToCart, removeItemFromCart] =
     useContext(CartContext);
@@ -21,16 +21,16 @@ export default function Shop() {
   }
 
   function handleCategoryChecked(category) {
-    if (checked.has(category)) {
-      checked.delete(category);
+    if (categoryChecked.has(category)) {
+      categoryChecked.delete(category);
     } else {
-      checked.add(category);
+      categoryChecked.add(category);
     }
-    setChecked(new Set(checked));
+    setCategoryChecked(new Set(categoryChecked));
   }
 
   function handleClear() {
-    setChecked(new Set());
+    setCategoryChecked(new Set());
   }
 
   function filterProducts(title) {
@@ -62,7 +62,7 @@ export default function Shop() {
                     id={`custom-category-checkbox-${index}`}
                     name={categ.toLowerCase()}
                     value={categ.toLowerCase()}
-                    checked={checked.has(categ.toLowerCase())}
+                    checked={categoryChecked.has(categ.toLowerCase())}
                     onChange={() => handleCategoryChecked(categ.toLowerCase())}
                   />
                   <label htmlFor={`custom-category-checkbox-${index}`}>
@@ -80,7 +80,8 @@ export default function Shop() {
       <div className={styles.cardGrid}>
         {products.map(
           (item) =>
-            (checked.size === 0 || checked.has(item.category)) &&
+            (categoryChecked.size === 0 ||
+              categoryChecked.has(item.category)) &&
             filterProducts(item.title.toLowerCase()) && (
               <Card
                 click={navigateToProduct}

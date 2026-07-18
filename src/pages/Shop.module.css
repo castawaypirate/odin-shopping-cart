@@ -7,8 +7,8 @@
 
 .shopControls {
   display: flex;
-  flex-direction: row;
-  margin: 0 1rem 1rem 1rem;
+  flex-direction: column;
+  margin: 0 1rem 2rem 1rem;
   gap: 1rem;
 }
 
@@ -31,6 +31,7 @@
 .checkboxWrapper {
   display: flex;
   flex-direction: row;
+  /* align-items: center; */
   gap: 0.5rem;
   label {
     text-wrap: nowrap;
@@ -44,4 +45,8 @@
 
 .regularButton {
   padding: 0 0.3rem;
+}
+
+.regularButton:hover {
+  cursor: pointer;
 }
