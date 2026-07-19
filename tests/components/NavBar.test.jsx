@@ -1,12 +1,63 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
+import { render, renderWithProviders } from "../test-utils.jsx";
+import { MemoryRouter } from "react-router";
+import { CartProvider } from "../../src/contexts/CartContext";
 
-import App from "../../src/App";
+import NavBar from "../../src/components/NavBar";
+
+describe("NavBar", () => {
+  it("renders nav bar", () => {
+    // custom render imported from test-utils that wraps component with providers
+    render(<NavBar />);
+
+    // screen.debug();
+
+    const nav = screen.getByRole("navigation");
+    expect(nav).toBeInTheDocument();
+  });
+
+  it("renders nav bar (dynamic providers)", () => {
+    // this is the same thing the render above, but you can pass as many providers as you want dynamically
+    renderWithProviders(<NavBar />, {
+      providers: [[MemoryRouter], [CartProvider]],
+    });
+
+    const nav = screen.getByRole("navigation");
+    expect(nav).toBeInTheDocument();
+  });
+
+  it("renders links to Home, Shop, and Cart", () => {
+    renderWithProviders(<NavBar />, {
+      providers: [[MemoryRouter], [CartProvider]],
+    });
+
+    const home = screen.getByRole("link", { name: /home/i });
+    expect(home).toBeInTheDocument();
+    expect(home).toHaveAttribute("href", "/");
+
+    const shop = screen.getByRole("link", { name: /shop/i });
+    expect(shop).toBeInTheDocument();
+    expect(shop).toHaveAttribute("href", "/shop");
+
+    const cart = screen.getByRole("link", { name: /cart/i });
+    expect(cart).toBeInTheDocument();
+    expect(cart).toHaveAttribute("href", "/cart");
+  });
+});
 
 // describe("App", () => {
 //   it("renders counter button", () => {
 //     render(<App />);
+// it("counter button", async () => {
+//   const user = userEvent.setup();
+//   render(<App />);
+//   const counter = screen.getByText(/Count/);
+//   await user.click(counter);
+//   await user.click(counter);
+//   expect(counter.textContent).toEqual("Count is 2");
+// });
 //
 //     screen.debug();
 //

@@ -126,7 +126,7 @@ export default function Cart() {
                 (item, index) =>
                   filterProducts(item.product.title.toLowerCase()) && (
                     <div key={item.product.id} className={styles.cartItem}>
-                      <div>
+                      <div className={styles.itemInfo}>
                         <div className={styles.checkboxWrapper}>
                           <input
                             type="checkbox"

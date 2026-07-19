@@ -11,7 +11,6 @@ export const CartProvider = ({ children }) => {
   const addItemToCart = (item) => {
     let tempSet = new Set(checked);
     // if item alredy in the cart adding a new one should not change the checked state of it
-
     if (
       cartItems.findIndex((it) => it.id === item.id) === -1 &&
       !tempSet.has(item.id)

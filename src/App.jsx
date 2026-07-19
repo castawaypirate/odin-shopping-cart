@@ -1,4 +1,5 @@
-import { Outlet, useNavigation } from "react-router";
+import { Outlet } from "react-router";
+// import { useNavigation } from "react-router";
 import NavBar from "./components/NavBar";
 import { CartProvider } from "./contexts/CartContext";
 

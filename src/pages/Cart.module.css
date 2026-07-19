@@ -11,27 +11,6 @@
   gap: 1rem;
 }
 
-.topBar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.checkboxWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-  label {
-    text-wrap: nowrap;
-  }
-
-  input:hover,
-  label:hover {
-    cursor: pointer;
-  }
-}
-
 .cartItem {
   display: flex;
   flex-direction: row;
@@ -40,9 +19,40 @@
   margin: 0.5rem 0;
 }
 
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.itemInfo {
+  overflow-x: hidden;
+}
+
+.checkboxWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    overflow: auto;
+    text-wrap: nowrap;
+    /* white-space: nowrap; */
+    /* overflow-x: hidden; */
+    /* text-overflow: ellipsis; */
+  }
+
+  input:hover,
+  label:hover {
+    cursor: pointer;
+  }
+}
+
 .iconContainer {
   border: none;
   background: none;
+  margin-left: 0.5rem;
   svg {
     width: 24px;
     height: 24px;
