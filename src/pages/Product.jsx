@@ -5,6 +5,8 @@ import { CartContext } from "../contexts/CartContext";
 
 import styles from "./Product.module.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Product() {
   const [loading, setLoading] = useState(true);
   const productData = useLoaderData();
@@ -89,12 +91,12 @@ export default function Product() {
 
 // eslint-disable-next-line react-refresh/only-export-components
 export async function loader({ params }) {
-  const url = `https://fakestoreapi.com/products/${params.id}`;
+  const url = `${API_URL}/products/${params.id}`;
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Response(
-      "Error while fetching product data. Response:" + response.statusText,
-    );
+    throw new Response(response.statusText, {
+      status: response.status,
+    });
   } else {
     const responseData = await response.json();
     return responseData;

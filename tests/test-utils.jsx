@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter, RouterProvider, createMemoryRouter } from "react-router";
 import { CartProvider } from "../src/contexts/CartContext";
+import routes from "../src/routes";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }) => {
@@ -34,3 +35,10 @@ const renderWithProviders = (ui, { providers = [], ...renderOptions } = {}) => {
 };
 
 export { renderWithProviders };
+
+const renderRouted = (initialEntries = ["/"]) => {
+  const router = createMemoryRouter(routes, { initialEntries });
+  return render(<RouterProvider router={router} />);
+};
+
+export { renderRouted };
