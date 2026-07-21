@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
-import { render, renderWithProviders } from "../test-utils.jsx";
+import { customRender, renderWithProviders } from "../test-utils.jsx";
 import { MemoryRouter } from "react-router";
 import { CartProvider } from "../../src/contexts/CartContext";
 
@@ -10,7 +10,7 @@ import NavBar from "../../src/components/NavBar";
 describe("NavBar", () => {
   it("renders nav bar", () => {
     // custom render imported from test-utils that wraps component with providers
-    render(<NavBar />);
+    customRender(<NavBar />);
 
     // screen.debug();
 

@@ -98,7 +98,16 @@ export async function loader({ params }) {
       status: response.status,
     });
   } else {
-    const responseData = await response.json();
-    return responseData;
+    const responseText = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      throw new Response("Invalid product data", { status: 500 });
+    }
+    if (!Object.getOwnPropertyNames(data).includes("id")) {
+      throw new Response("Product not found", { status: 404 });
+    }
+    return data;
   }
 }

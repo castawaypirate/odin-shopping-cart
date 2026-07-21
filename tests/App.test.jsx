@@ -2,7 +2,7 @@ import { vi, describe, it, expect, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router";
-import { renderRouted } from "./test-utils";
+import { renderRouted, fullTestRoutes } from "./test-utils";
 
 import App from "../src/App";
 
@@ -27,6 +27,16 @@ describe("App", () => {
 
     const links = screen.getAllByRole("link");
     expect(links.length).toBe(3);
+  });
+
+  it("need to find title", async () => {
+    renderRouted(["/unknown"]);
+
+    const error = await screen.findByRole("heading", {
+      name: /oh no, this route doesn't exist!/i,
+    });
+
+    expect(error).toBeInTheDocument();
   });
 
   it("shows Home Page content at /", () => {
@@ -116,9 +126,58 @@ describe("App", () => {
     renderRouted(["/shop"]);
 
     const error = await screen.findByRole("heading", {
-      name: "Error",
+      name: /network error/i,
     });
 
     expect(error).toBeInTheDocument();
+  });
+
+  it("i test things here", async () => {
+    fullTestRoutes({
+      initialEntries: ["/shop"],
+      loaders: {
+        shop: () => [
+          ["electronics"],
+          [
+            { id: 1, title: "Widget", price: 9.99, category: "electronics" },
+            { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
+          ],
+        ],
+      },
+    });
+
+    const product = await screen.findByText("Widget");
+
+    expect(product).toBeInTheDocument();
+  });
+
+  it("i also test things here", async () => {
+    fullTestRoutes({
+      initialEntries: ["/shop"],
+    });
+
+    const search = await screen.findByPlaceholderText(/search wares/i);
+
+    expect(search).toBeInTheDocument();
+  });
+
+  it("i also also test things here", async () => {
+    fullTestRoutes({
+      initialEntries: ["/product/1"],
+      loaders: {
+        product: () => ({
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+        }),
+      },
+    });
+  });
+
+  it("i also also also test things here", async () => {
+    fullTestRoutes({
+      initialEntries: ["/product/1"],
+    });
   });
 });
