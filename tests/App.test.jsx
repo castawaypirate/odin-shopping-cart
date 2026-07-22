@@ -1,8 +1,24 @@
 import { vi, describe, it, expect, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router";
-import { renderRouted, fullTestRoutes } from "./test-utils";
+import { Routes, Route, MemoryRouter } from "react-router";
+import {
+  renderRouted,
+  fullTestRoutes,
+  customRenderInitial,
+  renderWithProviders,
+  customRender,
+} from "./test-utils";
+import { CartProvider } from "../src/contexts/CartContext";
+
+import Home from "../src/pages/Home";
+import Shop from "../src/pages/Shop";
+import Cart from "../src/pages/Cart";
+import Product from "../src/pages/Product";
 
 import App from "../src/App";
 
@@ -21,6 +37,60 @@ describe("App", () => {
     expect(nav).toBeInTheDocument();
   });
 
+  it("renders navigation landmard", () => {
+    customRender(
+      <Routes>
+        <Route
+          path="/"
+          Component={App}
+          errorElement={<h1>Full Routes Error</h1>}
+        >
+          <Route path="/" Component={Home} />
+          <Route
+            path="shop"
+            Component={Shop}
+            hydrateFallbackElement={<div>Loading...</div>}
+            loader={() => [
+              ["electronics"],
+              [
+                {
+                  id: 1,
+                  title: "Widget",
+                  price: 9.99,
+                  category: "electronics",
+                },
+                {
+                  id: 2,
+                  title: "Gadget",
+                  price: 19.99,
+                  category: "electronics",
+                },
+              ],
+            ]}
+            errorElement={<h1>Full Routes Error Shop</h1>}
+          />
+          <Route
+            path="product/:id"
+            HydrateFallback={() => <div>Loading...</div>}
+            Component={Product}
+            loader={() => ({
+              id: 1,
+              title: "Widget",
+              price: 9.99,
+              category: "electronics",
+            })}
+            errorElement={<h1>Full Routes Error Product</h1>}
+          />
+          <Route path="cart" Component={Cart} />
+        </Route>
+      </Routes>,
+    );
+
+    const heading = screen.getByText("Welcome to my shop!");
+
+    expect(heading).toBeInTheDocument();
+  });
+
   it("renders links to Home, Shop, and Cart", () => {
     // this is the same thing as the render above
     render(<App />, { wrapper: MemoryRouter });
@@ -29,7 +99,7 @@ describe("App", () => {
     expect(links.length).toBe(3);
   });
 
-  it("need to find title", async () => {
+  it("shows error page for unknown routes", async () => {
     renderRouted(["/unknown"]);
 
     const error = await screen.findByRole("heading", {
@@ -46,6 +116,16 @@ describe("App", () => {
 
     expect(heading).toBeInTheDocument();
   });
+
+  // it("shows Home Page content at /", () => {
+  //   renderWithProviders(<App />, {
+  //     providers: [[MemoryRouter, { initialEntries: ["/"] }], [CartProvider]],
+  //   });
+  //
+  //   const heading = screen.getByText("Welcome to my shop!");
+  //
+  //   expect(heading).toBeInTheDocument();
+  // });
 
   it("shows the Cart heading when the Cart link is clicked", async () => {
     const user = userEvent.setup();
@@ -170,14 +250,30 @@ describe("App", () => {
           title: "Widget",
           price: 9.99,
           category: "electronics",
+          rating: { rate: 4.5, count: 34 },
         }),
       },
     });
+
+    const title = await screen.findByRole("heading", {
+      name: /widget/i,
+      level: 2,
+    });
+
+    expect(title).toBeInTheDocument();
   });
 
   it("i also also also test things here", async () => {
     fullTestRoutes({
       initialEntries: ["/product/1"],
     });
+    const fallback = screen.getByText(/loading/i);
+    await waitForElementToBeRemoved(fallback);
+
+    const errorProductHeading = await screen.findByRole("heading", {
+      name: /full routes error product/i,
+    });
+
+    expect(errorProductHeading).toBeInTheDocument();
   });
 });

@@ -25,26 +25,33 @@ const routes = [
         path: "shop",
         element: <Shop />,
         loader: async () => {
-          const response = await fetch(`${API_URL}/products`);
-          if (!response.ok) {
-            throw new Response(response.statusText, {
-              status: response.status,
+          try {
+            const response = await fetch(`${API_URL}/products`);
+            if (!response.ok) {
+              throw new Response(response.statusText, {
+                status: response.status,
+              });
+            }
+            const products = await response.json();
+            let set = new Set();
+            for (let product of products) {
+              let category = product.category
+                .toLowerCase()
+                .split(" ")
+                .map(function (word) {
+                  return word[0].toUpperCase() + word.substr(1);
+                })
+                .join(" ");
+              set.add(category);
+            }
+            // dummyLoader();
+            return [[...set], products];
+          } catch (e) {
+            if (e instanceof Response || e instanceof Error) throw e;
+            throw new Response("Something wrong with the products response", {
+              status: 500,
             });
           }
-          const products = await response.json();
-          let set = new Set();
-          for (let product of products) {
-            let category = product.category
-              .toLowerCase()
-              .split(" ")
-              .map(function (word) {
-                return word[0].toUpperCase() + word.substr(1);
-              })
-              .join(" ");
-            set.add(category);
-          }
-          // dummyLoader();
-          return [[...set], products];
         },
         hydrateFallbackElement: <h2>Loading...</h2>,
         errorElement: <ErrorElement />,
