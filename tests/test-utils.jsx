@@ -16,7 +16,7 @@ import Shop from "../src/pages/Shop";
 import Product from "../src/pages/Product";
 import App from "../src/App";
 
-// manually provide a router and the actual provider from the app and pass them to render function
+// Wraps children in MemoryRouter + CartProvider for component-level tests (no loader support)
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }) => {
   return (
@@ -31,7 +31,7 @@ const customRender = (ui, options) =>
 
 export { customRender };
 
-// this won't work with loaders because MemoryRouter doesn't know how to handle them and that is why we need RouterProvider
+// MemoryRouter provides Router context but can't run route loaders — use RouterProvider + createMemoryRouter for routes with loaders
 const createProviderWrapper = (initialEntries) => {
   return ({ children }) => (
     <MemoryRouter initialEntries={initialEntries}>
@@ -54,7 +54,7 @@ export { customRenderInitial };
 // eslint-disable-next-line react-refresh/only-export-components
 export * from "@testing-library/react";
 
-// dynamically provide the providers that will wrap up the content starting from the inner peel of the app onion to the outer, children are the components that should be nested, in the first iteration of reduceRight they are placed in the core of the onion, so content in the first iteration takes the value of the variable after "," which is children, in the second iteration what was built in the first iteration is returned and takes the place of content, so in the second iteration in the content value we have children wrapped up by one provider, in the second we have children wrapped up by two providers and so on, destructuring props inside a jsx element means that it should have key and value so the result be something like <Provider key={value}>content</Provider>
+// dynamically provide the providers that will wrap up the content starting from the inner peel of the app onion to the outer, children are the components that should be nested, in the first iteration of reduceRight they are placed in the core of the onion, so content in the first iteration takes the value of the variable after "," which is children, in the second iteration what was built in the first iteration is returned and takes the place of content, so in the second iteration in the content value we have children wrapped up by one provider, in the third we have children wrapped up by two providers and so on, spreading props inside a jsx element means that it should have key and value so the result be something like <Provider initialEntries={['/cart']}>content</Provider>
 const nestedProviders = (children, providers) =>
   providers.reduceRight(
     (content, [Provider, props]) => (
@@ -71,6 +71,7 @@ const renderWithProviders = (ui, { providers = [], ...renderOptions } = {}) => {
 
 export { renderWithProviders };
 
+// Uses the real routes.jsx config with createMemoryRouter — runs actual loaders (fetch calls). Mock fetch in tests that navigate to Shop/Product.
 const renderRouted = (initialEntries = ["/"]) => {
   const router = createMemoryRouter(routes, { initialEntries });
   return render(<RouterProvider router={router} />);
@@ -78,6 +79,7 @@ const renderRouted = (initialEntries = ["/"]) => {
 
 export { renderRouted };
 
+// Builds a JSX route tree from scratch — replaces real loaders with custom ones. Useful for tests that need controlled data without mocking fetch.
 const fullTestRoutes = ({ initialEntries = ["/"], loaders = {} } = {}) => {
   const fullRoutes = createRoutesFromElements(
     <>

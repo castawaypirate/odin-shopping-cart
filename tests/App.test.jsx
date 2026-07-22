@@ -26,7 +26,7 @@ describe("App", () => {
   // this is the same as restoreMocks: true in the vite.confg.js inside test
   afterEach(() => vi.restoreAllMocks());
 
-  it("renders navigation landmard", () => {
+  it("renders a navigation landmark", () => {
     render(
       <MemoryRouter>
         <App />
@@ -37,7 +37,7 @@ describe("App", () => {
     expect(nav).toBeInTheDocument();
   });
 
-  it("renders navigation landmard", () => {
+  it("renders the Home page with an inline JSX route tree and custom loaders", () => {
     customRender(
       <Routes>
         <Route
@@ -127,7 +127,7 @@ describe("App", () => {
   //   expect(heading).toBeInTheDocument();
   // });
 
-  it("shows the Cart heading when the Cart link is clicked", async () => {
+  it("navigates to Cart when the Cart link is clicked", async () => {
     const user = userEvent.setup();
     // this renders the whole app using RouterProvider and the actual routes of the application - this way <Outlet /> is rendered too
     renderRouted();
@@ -212,7 +212,7 @@ describe("App", () => {
     expect(error).toBeInTheDocument();
   });
 
-  it("i test things here", async () => {
+  it("renders Shop products via fullTestRoutes with a custom shop loader", async () => {
     fullTestRoutes({
       initialEntries: ["/shop"],
       loaders: {
@@ -231,7 +231,7 @@ describe("App", () => {
     expect(product).toBeInTheDocument();
   });
 
-  it("i also test things here", async () => {
+  it("renders Shop page empty via fullTestRoutes' default loader", async () => {
     fullTestRoutes({
       initialEntries: ["/shop"],
     });
@@ -241,7 +241,7 @@ describe("App", () => {
     expect(search).toBeInTheDocument();
   });
 
-  it("i also also test things here", async () => {
+  it("renders Product page via fullTestRoutes with a custom product loader", async () => {
     fullTestRoutes({
       initialEntries: ["/product/1"],
       loaders: {
@@ -263,7 +263,7 @@ describe("App", () => {
     expect(title).toBeInTheDocument();
   });
 
-  it("i also also also test things here", async () => {
+  it("shows error element on Product page when no loader is provided", async () => {
     fullTestRoutes({
       initialEntries: ["/product/1"],
     });
