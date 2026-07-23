@@ -27,7 +27,11 @@ export default function Card({
   };
   return (
     <div className={styles.card}>
-      <div className={styles.cardContent} onClick={() => click(product.id)}>
+      <div
+        aria-label={`view ${product.title}`}
+        className={styles.cardContent}
+        onClick={() => click(product.id)}
+      >
         <div className={styles.imgContainer}>
           {loading && <h4>Loading...</h4>}
           <img
@@ -46,17 +50,32 @@ export default function Card({
       </div>
       <div className={styles.cartControls}>
         {count === 0 ? (
-          <button onClick={() => addItem(product)} className={styles.cartIcon}>
+          <button
+            onClick={() => addItem(product)}
+            className={styles.cartIcon}
+            aria-label="add to cart"
+          >
             <CartIcon size={24} />
           </button>
         ) : (
           <>
             <div className={styles.quantityControls}>
-              <button onClick={() => addItem(product)}>+</button>
+              <button
+                aria-label="increase quantity"
+                onClick={() => addItem(product)}
+              >
+                +
+              </button>
               <span>{count}</span>
-              <button onClick={() => removeItem(product)}>-</button>
+              <button
+                aria-label="decrease quantity"
+                onClick={() => removeItem(product)}
+              >
+                -
+              </button>
             </div>
             <button
+              aria-label="checkout"
               className={styles.regularButton}
               onClick={() => navigate("/cart")}
             >

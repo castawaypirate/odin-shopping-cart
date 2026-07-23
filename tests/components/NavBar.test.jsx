@@ -1,24 +1,27 @@
-import { describe, it, expect } from "vitest";
+import { vi, describe, it, expect, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { screen } from "@testing-library/react";
-import { customRender, renderWithProviders } from "../test-utils.jsx";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import {
+  customRender,
+  renderWithProviders,
+  renderRouted,
+} from "../test-utils.jsx";
 import { MemoryRouter } from "react-router";
 import { CartProvider } from "../../src/contexts/CartContext";
 
 import NavBar from "../../src/components/NavBar";
 
 describe("NavBar", () => {
-  it("renders nav bar", () => {
+  afterEach(() => vi.restoreAllMocks());
+  it("renders as a navigation landmark", () => {
     // custom render imported from test-utils that wraps component with providers
     customRender(<NavBar />);
-
-    // screen.debug();
 
     const nav = screen.getByRole("navigation");
     expect(nav).toBeInTheDocument();
   });
 
-  it("renders nav bar (dynamic providers)", () => {
+  it("renders with providers passed explicitly via renderWithProviders", () => {
     // this is the same thing the render above, but you can pass as many providers as you want dynamically
     renderWithProviders(<NavBar />, {
       providers: [[MemoryRouter], [CartProvider]],
@@ -45,188 +48,88 @@ describe("NavBar", () => {
     expect(cart).toBeInTheDocument();
     expect(cart).toHaveAttribute("href", "/cart");
   });
+
+  it("navigates to Shop from Home via the nav link and displays products", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => [
+        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
+        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
+      ],
+    });
+    const user = userEvent.setup();
+    renderRouted(["/"]);
+
+    const home = screen.getByRole("heading", { name: /welcome to my shop/i });
+    expect(home).toBeInTheDocument();
+
+    const shop = screen.getByRole("link", { name: /shop/i });
+    expect(shop).toBeInTheDocument();
+    await user.click(shop);
+
+    const gadget = await screen.findByText(/gadget/i);
+
+    expect(gadget).toBeInTheDocument();
+  });
+
+  it("navigates to Cart from Home via the nav link", async () => {
+    const user = userEvent.setup();
+    renderRouted(["/"]);
+
+    const cart = screen.getByRole("link", { name: /cart/i });
+    expect(cart).toBeInTheDocument();
+    await user.click(cart);
+
+    const yourCart = screen.getByRole("heading", { name: /your cart/i });
+    expect(yourCart).toBeInTheDocument();
+  });
+
+  it("navigates back to Home from Cart via the nav link", async () => {
+    const user = userEvent.setup();
+    renderRouted(["/cart"]);
+
+    const home = screen.getByRole("link", { name: /home/i });
+    expect(home).toBeInTheDocument();
+    await user.click(home);
+
+    const welcome = screen.getByRole("heading", {
+      name: /welcome to my shop/i,
+    });
+    expect(welcome).toBeInTheDocument();
+  });
+
+  it("adds items to the cart and updates the badge counter from the Shop page", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => [
+        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
+        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
+      ],
+    });
+    const user = userEvent.setup();
+    renderRouted(["/shop"]);
+
+    const addToCart = await screen.findAllByRole("button", { name: /add to cart/i });
+    await user.click(addToCart[0]);
+
+    let cartCounter = await screen.findByLabelText(/1 items in cart/i);
+    expect(cartCounter).toBeInTheDocument();
+
+    const add = await screen.findByRole("button", {
+      name: /increase quantity/i,
+    });
+    await user.click(add);
+    await user.click(add);
+
+    cartCounter = await screen.findByLabelText(/3 items in cart/i);
+    expect(cartCounter).toBeInTheDocument();
+
+    const minus = await screen.findByRole("button", {
+      name: /decrease quantity/i,
+    });
+    await user.click(minus);
+
+    cartCounter = await screen.findByLabelText(/2 items in cart/i);
+    expect(cartCounter).toBeInTheDocument();
+  });
 });
-
-// describe("App", () => {
-//   it("renders counter button", () => {
-//     render(<App />);
-// it("counter button", async () => {
-//   const user = userEvent.setup();
-//   render(<App />);
-//   const counter = screen.getByText(/Count/);
-//   await user.click(counter);
-//   await user.click(counter);
-//   expect(counter.textContent).toEqual("Count is 2");
-// });
-//
-//     screen.debug();
-//
-//     const button = screen.getByRole("button");
-//
-//     expect(button).toBeInTheDocument();
-//     expect(button).toHaveTextContent(/Count is/);
-//   });
-//
-//   it("counter button", async () => {
-//     const user = userEvent.setup();
-//     render(<App />);
-//     const counter = screen.getByText(/Count/);
-//     await user.click(counter);
-//     await user.click(counter);
-//     expect(counter.textContent).toEqual("Count is 2");
-//   });
-// });
-
-// import { vi, test, describe, it, expect } from "vitest";
-// import userEvent from "@testing-library/user-event";
-// import {
-//   render,
-//   screen,
-//   waitForElementToBeRemoved,
-// } from "@testing-library/react";
-// import App from "../App.jsx";
-// import { Input } from "../App.jsx";
-//
-// window.fetch = vi.fn(() => {
-//   const user = { name: "Jack", email: "jack@email.com" };
-//
-//   return Promise.resolve({
-//     json: () => Promise.resolve(user),
-//   });
-// });
-//
-// describe("Testing App Component", () => {
-//   test("render h1 element", () => {
-//     render(<App />);
-//     screen.debug();
-//     expect(screen.getByText(/Hello/)).toBeInTheDocument();
-//     // expect(screen.getByText("Hello World")).toBeInTheDocument();
-//   });
-//
-//   test("list contains 5 animals", () => {
-//     render(<App />);
-//
-//     const listElement = screen.getByRole("list");
-//     const listItems = screen.getAllByRole("listitem");
-//
-//     expect(listElement).toBeInTheDocument();
-//     expect(listElement).toHaveClass("animals");
-//     expect(listItems.length).toEqual(5);
-//   });
-//
-//   test("loading text is shown while API request is in progress", async () => {
-//     render(<App />);
-//     const loading = screen.getByText("Loading...");
-//
-//     expect(loading).toBeInTheDocument();
-//
-//     await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
-//   });
-//
-//   test("user's name is rendered", async () => {
-//     render(<App />);
-//     const userName = await screen.findByText("Jack");
-//     expect(userName).toBeInTheDocument();
-//   });
-//
-//   test("error message is shown", async () => {
-//     window.fetch.mockImplementationOnce(() => {
-//       return Promise.reject({ message: "API is down" });
-//     });
-//
-//     render(<App />);
-//
-//     const errorMessage = await screen.findByText("API is down");
-//     expect(errorMessage).toBeInTheDocument();
-//   });
-// });
-//
-// describe("Testing App Component", () => {
-//   test("counter is incremented on increment button click", async () => {
-//     const user = userEvent.setup();
-//     render(<App />);
-//
-//     const counter = screen.getByTestId("counter");
-//     const incrementBtn = screen.getByText("Increment");
-//
-//     await user.click(incrementBtn);
-//     await user.click(incrementBtn);
-//
-//     expect(counter.textContent).toEqual("2");
-//   });
-//
-//   test("counter is decremented on decrement button click", async () => {
-//     const user = userEvent.setup();
-//     render(<App />);
-//
-//     const counter = screen.getByTestId("counter");
-//     const decrementBtn = screen.getByText("Decrement");
-//
-//     await user.click(decrementBtn);
-//     await user.click(decrementBtn);
-//
-//     expect(counter.textContent).toEqual("-2");
-//   });
-// });
-//
-// test("input value is updated correctly", async () => {
-//   const user = userEvent.setup();
-//   render(<App />);
-//
-//   const input = screen.getByRole("textbox");
-//   await user.type(input, "React");
-//
-//   expect(input.value).toBe("React");
-// });
-//
-// test("call the callback every time input value is changed", async () => {
-//   const handleChange = vi.fn();
-//   const user = userEvent.setup();
-//
-//   render(<Input handleChange={handleChange} inputValue="" />);
-//
-//   const input = screen.getByRole("textbox");
-//   await user.type(input, "React");
-//
-//   expect(handleChange).toHaveBeenCalledTimes(5);
-// });
-// // describe("something truthy and falsy", () => {
-// //   it("true to be true", () => {
-// //     expect(true).toBe(true);
-// //   });
-// //
-// //   it("false to be false", () => {
-// //     expect(false).toBe(false);
-// //   });
-// // });
-// //
-// // describe("App", () => {
-// //   it("renders headline", () => {
-// //     render(<App />);
-// //
-// //     const myHeading = screen.getByRole("heading");
-// //     screen.debug(myHeading);
-// //     expect(myHeading.textContent).toMatch(/Magnificent Monkeys/i);
-// //
-// //     // check if App components renders headline
-// //   });
-// // });
-// //
-// // describe("App component", () => {
-// //   it("renders magnificent monkeys", () => {
-// //     // since screen does not have the container property, we'll destructure render to obtain a container for this test
-// //     const { container } = render(<App />);
-// //     expect(container).toMatchSnapshot();
-// //   });
-// //
-// //   it("renders radical rhinos after button click", async () => {
-// //     const user = userEvent.setup();
-// //
-// //     render(<App />);
-// //     const button = screen.getByRole("button", { name: "Click Me" });
-// //
-// //     await user.click(button);
-// //
-// //     expect(screen.getByRole("heading").textContent).toMatch(/radical rhinos/i);
-// //   });
-// // });

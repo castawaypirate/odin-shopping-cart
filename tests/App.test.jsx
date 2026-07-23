@@ -6,14 +6,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Routes, Route, MemoryRouter } from "react-router";
-import {
-  renderRouted,
-  fullTestRoutes,
-  customRenderInitial,
-  renderWithProviders,
-  customRender,
-} from "./test-utils";
-import { CartProvider } from "../src/contexts/CartContext";
+import { renderRouted, fullTestRoutes, customRender } from "./test-utils";
 
 import Home from "../src/pages/Home";
 import Shop from "../src/pages/Shop";
@@ -24,6 +17,8 @@ import App from "../src/App";
 
 describe("App", () => {
   // this is the same as restoreMocks: true in the vite.confg.js inside test
+  // without this all whenever an already mocked function is fired it returns
+  // the first mocked values
   afterEach(() => vi.restoreAllMocks());
 
   it("renders a navigation landmark", () => {
@@ -86,9 +81,9 @@ describe("App", () => {
       </Routes>,
     );
 
-    const heading = screen.getByText("Welcome to my shop!");
+    const welcome = screen.getByText("Welcome to my shop!");
 
-    expect(heading).toBeInTheDocument();
+    expect(welcome).toBeInTheDocument();
   });
 
   it("renders links to Home, Shop, and Cart", () => {
@@ -112,9 +107,9 @@ describe("App", () => {
   it("shows Home Page content at /", () => {
     renderRouted();
 
-    const heading = screen.getByText("Welcome to my shop!");
+    const welcome = screen.getByText("Welcome to my shop!");
 
-    expect(heading).toBeInTheDocument();
+    expect(welcome).toBeInTheDocument();
   });
 
   // it("shows Home Page content at /", () => {
@@ -135,9 +130,9 @@ describe("App", () => {
     const cart = screen.getByRole("link", { name: /cart/i });
     await user.click(cart);
 
-    const heading = await screen.findByRole("heading", { name: /your cart/i });
+    const yourCart = await screen.findByRole("heading", { name: /your cart/i });
 
-    expect(heading).toBeInTheDocument();
+    expect(yourCart).toBeInTheDocument();
   });
 
   it("displays the empty cart message on the Cart page", async () => {
@@ -264,6 +259,7 @@ describe("App", () => {
   });
 
   it("shows error element on Product page when no loader is provided", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
     fullTestRoutes({
       initialEntries: ["/product/1"],
     });
