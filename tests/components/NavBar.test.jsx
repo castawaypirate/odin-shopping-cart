@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import {
   customRender,
   renderWithProviders,
@@ -109,10 +109,16 @@ describe("NavBar", () => {
     const user = userEvent.setup();
     renderRouted(["/shop"]);
 
-    const addToCart = await screen.findAllByRole("button", { name: /add to cart/i });
+    const cart = screen.getByRole("link", { name: /cart/i });
+    let cartCounter = within(cart).queryByLabelText(/ items in cart/i);
+    expect(cartCounter).not.toBeInTheDocument();
+
+    const addToCart = await screen.findAllByRole("button", {
+      name: /add to cart/i,
+    });
     await user.click(addToCart[0]);
 
-    let cartCounter = await screen.findByLabelText(/1 items in cart/i);
+    cartCounter = await screen.findByLabelText(/1 items in cart/i);
     expect(cartCounter).toBeInTheDocument();
 
     const add = await screen.findByRole("button", {

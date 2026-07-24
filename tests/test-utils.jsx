@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import {
+  Outlet,
   Route,
   Routes,
   MemoryRouter,
@@ -15,6 +16,7 @@ import Cart from "../src/pages/Cart";
 import Shop from "../src/pages/Shop";
 import Product from "../src/pages/Product";
 import App from "../src/App";
+import NavBar from "../src/components/NavBar";
 
 // Wraps children in MemoryRouter + CartProvider for component-level tests (no loader support)
 // eslint-disable-next-line react-refresh/only-export-components
@@ -55,6 +57,7 @@ export { customRenderInitial };
 export * from "@testing-library/react";
 
 // dynamically provide the providers that will wrap up the content starting from the inner peel of the app onion to the outer, children are the components that should be nested, in the first iteration of reduceRight they are placed in the core of the onion, so content in the first iteration takes the value of the variable after "," which is children, in the second iteration what was built in the first iteration is returned and takes the place of content, so in the second iteration in the content value we have children wrapped up by one provider, in the third we have children wrapped up by two providers and so on, spreading props inside a jsx element means that it should have key and value so the result be something like <Provider initialEntries={['/cart']}>content</Provider>
+// renderWithProviders should be fed with a ui element of <Routes></Routes> which is a browser-style router which doesn't support loader props
 const nestedProviders = (children, providers) =>
   providers.reduceRight(
     (content, [Provider, props]) => (
@@ -109,3 +112,62 @@ const fullTestRoutes = ({ initialEntries = ["/"], loaders = {} } = {}) => {
 };
 
 export { fullTestRoutes };
+
+const renderWithCartItems = (
+  ui,
+  { initialItems = [], initialEntries = ["/"] } = {},
+) => {
+  const routes = createRoutesFromElements(ui);
+  const router = createMemoryRouter(routes, { initialEntries });
+
+  return render(
+    <CartProvider initialItems={initialItems}>
+      <RouterProvider router={router}></RouterProvider>
+    </CartProvider>,
+  );
+};
+
+export { renderWithCartItems };
+
+const renderProduct = ({
+  initialItems = [],
+  productData,
+  initialEntries = ["/product/1"],
+} = {}) => {
+  const routes = createRoutesFromElements(
+    <Route
+      path="/"
+      element={
+        <>
+          <NavBar />
+          <Outlet />
+        </>
+      }
+      HydrateFallback={() => <div>Loading...</div>}
+      errorElement={<h1>Render Product Error</h1>}
+    >
+      <Route
+        path="product/:id"
+        Component={Product}
+        loader={() => productData}
+        HydrateFallback={() => <div>Loading...</div>}
+        errorElement={<h1>Render Product Error Product</h1>}
+      />
+      <Route
+        path="cart"
+        Component={Cart}
+        hydrateFallbackElement={<div>Loading...</div>}
+        errorElement={<h1>Render Product Error Cart</h1>}
+      />
+    </Route>,
+  );
+  const router = createMemoryRouter(routes, { initialEntries });
+
+  return render(
+    <CartProvider initialItems={initialItems}>
+      <RouterProvider router={router}></RouterProvider>
+    </CartProvider>,
+  );
+};
+
+export { renderProduct };

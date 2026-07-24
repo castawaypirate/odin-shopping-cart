@@ -4,8 +4,8 @@ import { createContext } from "react";
 // eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+export const CartProvider = ({ initialItems = [], children }) => {
+  const [cartItems, setCartItems] = useState(initialItems);
   const [checked, setChecked] = useState(new Set());
 
   const addItemToCart = (item) => {

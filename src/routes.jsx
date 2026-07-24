@@ -53,14 +53,14 @@ const routes = [
             });
           }
         },
-        hydrateFallbackElement: <h2>Loading...</h2>,
+        hydrateFallbackElement: <h2 style={{ margin: "1rem" }}>Loading...</h2>,
         errorElement: <ErrorElement />,
       },
       {
         path: "product/:id",
         element: <Product />,
         loader: ProductLoader,
-        hydrateFallbackElement: <h2>Loading...</h2>,
+        hydrateFallbackElement: <h2 style={{ margin: "1rem" }}>Loading...</h2>,
         errorElement: <ErrorElement />,
       },
       {

@@ -66,19 +66,31 @@ export default function Product() {
           <button
             onClick={() => addItem(productData)}
             className={styles.cartIcon}
+            aria-label="add to cart"
           >
             <CartIcon size={24} />
           </button>
         ) : (
           <>
             <div className={styles.quantityControls}>
-              <button onClick={() => addItem(productData)}>+</button>
-              <span>{count()}</span>
-              <button onClick={() => removeItem(productData)}>-</button>
+              <button
+                aria-label="increase quantity"
+                onClick={() => addItem(productData)}
+              >
+                +
+              </button>
+              <span aria-label="quantity count">{count()}</span>
+              <button
+                aria-label="decrease quantity"
+                onClick={() => removeItem(productData)}
+              >
+                -
+              </button>
             </div>
             <button
               className={styles.regularButton}
               onClick={() => navigate("/cart")}
+              aria-label="checkout"
             >
               Checkout
             </button>

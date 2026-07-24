@@ -6,12 +6,18 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Routes, Route, MemoryRouter } from "react-router";
-import { renderRouted, fullTestRoutes, customRender } from "./test-utils";
+import {
+  renderWithProviders,
+  renderRouted,
+  fullTestRoutes,
+  customRender,
+} from "./test-utils";
 
 import Home from "../src/pages/Home";
 import Shop from "../src/pages/Shop";
 import Cart from "../src/pages/Cart";
 import Product from "../src/pages/Product";
+import { CartProvider } from "../src/contexts/CartContext";
 
 import App from "../src/App";
 
@@ -112,15 +118,26 @@ describe("App", () => {
     expect(welcome).toBeInTheDocument();
   });
 
-  // it("shows Home Page content at /", () => {
-  //   renderWithProviders(<App />, {
-  //     providers: [[MemoryRouter, { initialEntries: ["/"] }], [CartProvider]],
-  //   });
-  //
-  //   const heading = screen.getByText("Welcome to my shop!");
-  //
-  //   expect(heading).toBeInTheDocument();
-  // });
+  it("shows Home Page content at / (render with providers)", () => {
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/"
+          Component={App}
+          errorElement={<h1>Full Routes Error</h1>}
+        >
+          <Route path="/" Component={Home} />
+        </Route>
+      </Routes>,
+      {
+        providers: [[MemoryRouter, { initialEntries: ["/"] }], [CartProvider]],
+      },
+    );
+
+    const heading = screen.getByText("Welcome to my shop!");
+
+    expect(heading).toBeInTheDocument();
+  });
 
   it("navigates to Cart when the Cart link is clicked", async () => {
     const user = userEvent.setup();

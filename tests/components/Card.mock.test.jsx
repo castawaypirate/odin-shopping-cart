@@ -14,7 +14,7 @@ vi.mock("react-router", async () => {
   };
 });
 
-describe("Card", () => {
+describe("Card (mock)", () => {
   afterEach(() => vi.restoreAllMocks());
   it("calls useNavigate with /cart when checkout is clicked", async () => {
     const user = userEvent.setup();

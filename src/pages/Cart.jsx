@@ -92,6 +92,7 @@ export default function Cart() {
             type="search"
             value={search}
             onChange={handleSearch}
+            aria-label="search cart input"
           />
 
           <div className={styles.checkboxList}>
@@ -104,6 +105,7 @@ export default function Cart() {
                   value="all"
                   checked={Object.values(orderItems).length === checked.size}
                   onChange={handleSelectAll}
+                  aria-label="select all cart items"
                 />
                 <label htmlFor="selectAll">Select All</label>
               </div>
@@ -111,6 +113,7 @@ export default function Cart() {
                 onClick={emptyCart}
                 disabled={checked.size === 0}
                 className={styles.iconContainer}
+                aria-label="empty cart"
               >
                 <svg
                   className={`${checked.size > 0 ? styles.active : ""}`}
@@ -125,7 +128,11 @@ export default function Cart() {
               {Object.values(orderItems).map(
                 (item, index) =>
                   filterProducts(item.product.title.toLowerCase()) && (
-                    <div key={item.product.id} className={styles.cartItem}>
+                    <div
+                      aria-label={`${item.product.title} listing`}
+                      key={item.product.id}
+                      className={styles.cartItem}
+                    >
                       <div className={styles.itemInfo}>
                         <div className={styles.checkboxWrapper}>
                           <input
@@ -135,6 +142,7 @@ export default function Cart() {
                             value={item.product.title}
                             checked={checked.has(item.product.id)}
                             onChange={() => handleSelect(item.product)}
+                            aria-label={`${item.product.title} checkbox`}
                           />
                           <label htmlFor={`custom-cart-checkbox-${index}`}>
                             {item.product.title}
@@ -148,11 +156,19 @@ export default function Cart() {
                           gp
                         </p>
                         <div className={styles.quantityControls}>
-                          <button onClick={() => addItemToCart(item.product)}>
+                          <button
+                            aria-label={`increase ${item.product.title} quantity`}
+                            onClick={() => addItemToCart(item.product)}
+                          >
                             +
                           </button>
-                          <span>{item.count}</span>
+                          <span
+                            aria-label={`${item.product.title} quantity count`}
+                          >
+                            {item.count}
+                          </span>
                           <button
+                            aria-label={`decrease ${item.product.title} quantity`}
                             onClick={() => removeItemFromCart(item.product)}
                           >
                             -
@@ -164,6 +180,7 @@ export default function Cart() {
                           removeItemFromCart(item.product, item.count)
                         }
                         className={styles.iconContainer}
+                        aria-label={`remove ${item.product.title}`}
                       >
                         <svg
                           className={styles.active}
@@ -182,8 +199,12 @@ export default function Cart() {
       )}
 
       <div className={styles.cartActions}>
-        <button onClick={() => navigate("/shop")}>Back to Shopping</button>
-        {cartItems.length !== 0 && <button>Pay {totalDamage} gp</button>}
+        <button onClick={() => navigate("/shop")} aria-label="back to shop">
+          Back to Shopping
+        </button>
+        {cartItems.length !== 0 && (
+          <button aria-label="pay the damage">Pay {totalDamage} gp</button>
+        )}
       </div>
     </div>
   );

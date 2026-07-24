@@ -13,7 +13,6 @@ function LocationDisplay() {
 }
 
 describe("Card", () => {
-  afterEach(() => vi.restoreAllMocks());
   it("renders product title, count, and +/- buttons", async () => {
     const props = {
       click: () => {},

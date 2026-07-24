@@ -26,7 +26,7 @@ export default function Card({
     handleRemove(product);
   };
   return (
-    <div className={styles.card}>
+    <div aria-label={`${product.title} card`} className={styles.card}>
       <div
         aria-label={`view ${product.title}`}
         className={styles.cardContent}
@@ -66,7 +66,7 @@ export default function Card({
               >
                 +
               </button>
-              <span>{count}</span>
+              <span aria-label="quantity count">{count}</span>
               <button
                 aria-label="decrease quantity"
                 onClick={() => removeItem(product)}
