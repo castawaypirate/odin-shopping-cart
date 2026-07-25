@@ -1,21 +1,17 @@
 import { vi, describe, it, expect, afterEach } from "vitest";
 import {
   within,
+  fireEvent,
   screen,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {
-  renderProduct,
-  renderRouted,
-  fullTestRoutes,
-  customRender,
-} from "../test-utils";
+import { renderProduct, renderRouted, fullTestRoutes } from "../test-utils";
 
 describe("Product", () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it("test 1", async () => {
+  it("adds item from empty cart, adjusts quantity, and navigates to checkout via renderRouted", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       text: async () =>
@@ -38,7 +34,7 @@ describe("Product", () => {
     let widgetTitle = await screen.findByText("Widget");
     expect(widgetTitle).toBeInTheDocument();
 
-    let widgetPrice = await screen.findByText(/9\.99/i);
+    let widgetPrice = await screen.findByText(/9\.99 gp/i);
     expect(widgetPrice).toBeInTheDocument();
 
     let widgetCategory = await screen.findByText(/electronics/i);
@@ -105,7 +101,7 @@ describe("Product", () => {
     expect(cartWidgetCount.textContent).toBe("2");
   });
 
-  it("test 2", async () => {
+  it("starts with pre-seeded cart, adjusts quantity, and navigates to checkout via renderProduct", async () => {
     const user = userEvent.setup();
     renderProduct({
       initialItems: [
@@ -114,6 +110,7 @@ describe("Product", () => {
           title: "Widget",
           price: 9.99,
           category: "electronics",
+          description: "An electronic widget.",
           rating: { rate: 4.5, count: 34 },
         },
       ],
@@ -122,6 +119,7 @@ describe("Product", () => {
         title: "Widget",
         price: 9.99,
         category: "electronics",
+        description: "An electronic widget.",
         rating: { rate: 4.5, count: 34 },
       },
       initialEntries: ["/product/1"],
@@ -133,7 +131,7 @@ describe("Product", () => {
     let widgetTitle = await screen.findByText("Widget");
     expect(widgetTitle).toBeInTheDocument();
 
-    let widgetPrice = await screen.findByText(/9\.99/i);
+    let widgetPrice = await screen.findByText(/9\.99 gp/i);
     expect(widgetPrice).toBeInTheDocument();
 
     let widgetCategory = await screen.findByText(/electronics/i);
@@ -195,7 +193,7 @@ describe("Product", () => {
     expect(cartWidgetCount.textContent).toBe("2");
   });
 
-  it("test 3", async () => {
+  it("adds item from empty cart, adjusts quantity, and navigates to checkout via fullTestRoutes", async () => {
     const user = userEvent.setup();
     fullTestRoutes({
       initialEntries: ["/product/1"],
@@ -205,6 +203,7 @@ describe("Product", () => {
           title: "Widget",
           price: 9.99,
           category: "electronics",
+          description: "An electronic widget.",
           rating: { rate: 4.5, count: 34 },
         }),
       },
@@ -215,7 +214,7 @@ describe("Product", () => {
     let widgetTitle = await screen.findByText("Widget");
     expect(widgetTitle).toBeInTheDocument();
 
-    let widgetPrice = await screen.findByText(/9\.99/i);
+    let widgetPrice = await screen.findByText(/9\.99 gp/i);
     expect(widgetPrice).toBeInTheDocument();
 
     let widgetCategory = await screen.findByText(/electronics/i);
@@ -280,5 +279,72 @@ describe("Product", () => {
       /widget quantity count/i,
     );
     expect(cartWidgetCount.textContent).toBe("2");
+  });
+
+  it("shows loading state while image loads, then hides it", async () => {
+    fullTestRoutes({
+      initialEntries: ["/product/1"],
+      loaders: {
+        product: () => ({
+          id: 1,
+          image: "widget.png",
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        }),
+      },
+    });
+
+    const fallback = screen.getByText(/loading/i);
+    await waitForElementToBeRemoved(fallback);
+
+    let loading = screen.queryByRole("heading", {
+      name: /loading/i,
+      level: 4,
+    });
+
+    expect(loading).toBeInTheDocument();
+
+    fireEvent.load(screen.getByRole("img", { hidden: true }));
+
+    loading = screen.queryByRole("heading", {
+      name: /loading/i,
+      level: 4,
+    });
+    expect(loading).not.toBeInTheDocument();
+
+    const image = screen.getByRole("img");
+    expect(image).toHaveAttribute("src", "widget.png");
+    expect(image).toHaveAttribute("alt", "Widget");
+  });
+
+  it("shows error page when fetch fails with network error", async () => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network error"));
+
+    renderRouted(["/product/1"]);
+
+    const error = await screen.findByRole("heading", {
+      name: /network error/i,
+    });
+
+    expect(error).toBeInTheDocument();
+  });
+
+  it("shows route error boundary when loader returns invalid data", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    fullTestRoutes({
+      initialEntries: ["/product/1"],
+      loaders: {
+        product: () => new Error("Network error"),
+      },
+    });
+
+    const error = await screen.findByRole("heading", {
+      name: /full routes error product/i,
+    });
+
+    expect(error).toBeInTheDocument();
   });
 });

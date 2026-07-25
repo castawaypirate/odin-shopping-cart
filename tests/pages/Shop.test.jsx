@@ -26,9 +26,29 @@ describe("Shop", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       json: async () => [
-        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
-        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
-        { id: 3, title: "Gummy bears", price: 3.11, category: "food" },
+        {
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        },
+        {
+          id: 2,
+          title: "Gadget",
+          price: 19.99,
+          category: "electronics",
+          description: "An electronic gadget.",
+          rating: { rate: 3.8, count: 12 },
+        },
+        {
+          id: 3,
+          title: "Gummy bears",
+          price: 3.11,
+          category: "food",
+          rating: { rate: 5, count: 12 },
+        },
       ],
     });
     renderRouted(["/shop"]);
@@ -71,12 +91,16 @@ describe("Shop", () => {
                 title: "Widget",
                 price: 9.99,
                 category: "electronics",
+                description: "An electronic widget.",
+                rating: { rate: 4.5, count: 34 },
               },
               {
                 id: 2,
                 title: "Gadget",
                 price: 19.99,
                 category: "electronics",
+                description: "An electronic gadget.",
+                rating: { rate: 3.8, count: 12 },
               },
             ],
           ]}
@@ -91,6 +115,8 @@ describe("Shop", () => {
             title: "Widget",
             price: 9.99,
             category: "electronics",
+            description: "An electronic widget.",
+            rating: { rate: 4.5, count: 34 },
           })}
           errorElement={<h1>Render with providers error product</h1>}
         />
@@ -104,6 +130,8 @@ describe("Shop", () => {
           title: "Widget",
           price: 9.99,
           category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
         },
       ],
       initialEntries: ["/shop"],
@@ -136,8 +164,22 @@ describe("Shop", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       json: async () => [
-        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
-        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
+        {
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        },
+        {
+          id: 2,
+          title: "Gadget",
+          price: 19.99,
+          category: "electronics",
+          description: "An electronic gadget.",
+          rating: { rate: 3.8, count: 12 },
+        },
         { id: 3, title: "Gummy bears", price: 3.11, category: "food" },
       ],
     });
@@ -174,10 +216,38 @@ describe("Shop", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       json: async () => [
-        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
-        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
-        { id: 3, title: "Gummy bears", price: 3.11, category: "food" },
-        { id: 4, title: "LEGO Sukuna", price: 999.99, category: "toys" },
+        {
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        },
+        {
+          id: 2,
+          title: "Gadget",
+          price: 19.99,
+          category: "electronics",
+          description: "An electronic gadget.",
+          rating: { rate: 3.8, count: 12 },
+        },
+        {
+          id: 3,
+          title: "Gummy bears",
+          price: 3.11,
+          category: "food",
+          description: "Delicious gummy bears.",
+          rating: { rate: 4.8, count: 100 },
+        },
+        {
+          id: 4,
+          title: "LEGO Sukuna",
+          price: 999.99,
+          category: "toys",
+          description: "A LEGO Sukuna figure.",
+          rating: { rate: 5.0, count: 1 },
+        },
       ],
     });
     renderRouted(["/shop"]);
@@ -233,10 +303,38 @@ describe("Shop", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       json: async () => [
-        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
-        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
-        { id: 3, title: "Gummy bears", price: 3.11, category: "food" },
-        { id: 4, title: "LEGO Sukuna", price: 999.99, category: "toys" },
+        {
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        },
+        {
+          id: 2,
+          title: "Gadget",
+          price: 19.99,
+          category: "electronics",
+          description: "An electronic gadget.",
+          rating: { rate: 3.8, count: 12 },
+        },
+        {
+          id: 3,
+          title: "Gummy bears",
+          price: 3.11,
+          category: "food",
+          description: "Delicious gummy bears.",
+          rating: { rate: 4.8, count: 100 },
+        },
+        {
+          id: 4,
+          title: "LEGO Sukuna",
+          price: 999.99,
+          category: "toys",
+          description: "A LEGO Sukuna figure.",
+          rating: { rate: 5.0, count: 1 },
+        },
       ],
     });
 
@@ -269,10 +367,38 @@ describe("Shop", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
       json: async () => [
-        { id: 1, title: "Widget", price: 9.99, category: "electronics" },
-        { id: 2, title: "Gadget", price: 19.99, category: "electronics" },
-        { id: 3, title: "Gummy bears", price: 3.11, category: "food" },
-        { id: 4, title: "LEGO Sukuna", price: 999.99, category: "toys" },
+        {
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        },
+        {
+          id: 2,
+          title: "Gadget",
+          price: 19.99,
+          category: "electronics",
+          description: "An electronic gadget.",
+          rating: { rate: 3.8, count: 12 },
+        },
+        {
+          id: 3,
+          title: "Gummy bears",
+          price: 3.11,
+          category: "food",
+          description: "Delicious gummy bears.",
+          rating: { rate: 4.8, count: 100 },
+        },
+        {
+          id: 4,
+          title: "LEGO Sukuna",
+          price: 999.99,
+          category: "toys",
+          description: "A LEGO Sukuna figure.",
+          rating: { rate: 5.0, count: 1 },
+        },
       ],
     });
 
@@ -465,5 +591,82 @@ describe("Shop", () => {
 
     const widget = await screen.findByText(/widget/i);
     expect(widget).toBeInTheDocument();
+  });
+
+  it("last test here", async () => {
+    const user = userEvent.setup();
+    vi.spyOn(globalThis, "fetch").mockResolvedValue({
+      ok: true,
+      json: async () => [
+        {
+          id: 1,
+          title: "Widget",
+          price: 9.99,
+          category: "electronics",
+          description: "An electronic widget.",
+          rating: { rate: 4.5, count: 34 },
+        },
+        {
+          id: 2,
+          title: "Gadget",
+          price: 19.99,
+          category: "electronics",
+          description: "An electronic gadget.",
+          rating: { rate: 3.8, count: 12 },
+        },
+        {
+          id: 3,
+          title: "Gummy bears",
+          price: 3.11,
+          category: "food",
+          description: "Delicious gummy bears.",
+          rating: { rate: 4.8, count: 100 },
+        },
+        {
+          id: 4,
+          title: "LEGO Sukuna",
+          price: 999.99,
+          category: "toys",
+          description: "A LEGO Sukuna figure.",
+          rating: { rate: 5.0, count: 1 },
+        },
+      ],
+    });
+    renderRouted(["/shop"]);
+
+    const widgetCard = await screen.findByLabelText(/widget card/i);
+    expect(widgetCard).toBeInTheDocument();
+
+    const addToCartWidget = await within(widgetCard).findByRole("button", {
+      name: /add to cart/i,
+    });
+    await user.click(addToCartWidget);
+
+    const legoCard = await screen.findByLabelText(/lego sukuna card/i);
+    expect(legoCard).toBeInTheDocument();
+
+    let addToCartLego = await within(legoCard).findByRole("button", {
+      name: /add to cart/i,
+    });
+
+    await user.click(addToCartLego);
+
+    let cart = await screen.findByRole("link", {
+      name: /cart/i,
+    });
+
+    await user.click(cart);
+
+    const selectAll = await screen.findByLabelText(/select all/i);
+    expect(selectAll).toBeChecked();
+
+    const widgetCheckbox = await screen.findByLabelText(/widget checkbox/i);
+    expect(widgetCheckbox).toBeChecked();
+
+    const legoCheckbox = await screen.findByLabelText(/lego sukuna checkbox/i);
+    expect(legoCheckbox).toBeChecked();
+
+    const damage = await screen.findByLabelText(/pay the damage/i);
+    expect(damage.textContent).toBe("Pay 1009.98 gp");
   });
 });
