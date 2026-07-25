@@ -30,7 +30,7 @@ describe("Cart", () => {
     expect(products.length).toBe(2);
   });
 
-  it("test 2", async () => {
+  it("shows empty cart message and hides search and pay button when cart is empty", async () => {
     renderRouted(["/cart"]);
 
     const cart = screen.getByRole("heading", {
@@ -49,7 +49,7 @@ describe("Cart", () => {
     expect(pay).not.toBeInTheDocument();
   });
 
-  it("test 3", async () => {
+  it("renders all cart UI elements when cart has items", async () => {
     const ui = (
       <Route
         path="/"
@@ -138,7 +138,7 @@ describe("Cart", () => {
     expect(pay).toBeInTheDocument();
   });
 
-  it("test 4", async () => {
+  it("toggles select all and individual checkboxes and updates pay total", async () => {
     const user = userEvent.setup();
     const ui = (
       <Route
@@ -261,7 +261,7 @@ describe("Cart", () => {
     expect(selectAll).toBeChecked();
   });
 
-  it("test 5", async () => {
+  it("clears cart to empty state when empty cart button is clicked", async () => {
     const user = userEvent.setup();
     const ui = (
       <Route
@@ -331,7 +331,7 @@ describe("Cart", () => {
     expect(pay).not.toBeInTheDocument();
   });
 
-  it("test 6", async () => {
+  it("removes individual items and updates pay total", async () => {
     const user = userEvent.setup();
     const ui = (
       <Route
@@ -425,7 +425,7 @@ describe("Cart", () => {
     expect(pay).not.toBeInTheDocument();
   });
 
-  it("test 7", async () => {
+  it("adjusts quantity controls and updates pay total with multiple items", async () => {
     const user = userEvent.setup();
     const ui = (
       <Route

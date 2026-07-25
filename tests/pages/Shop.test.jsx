@@ -593,7 +593,7 @@ describe("Shop", () => {
     expect(widget).toBeInTheDocument();
   });
 
-  it("last test here", async () => {
+  it("items added in shop are pre-checked in cart", async () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
